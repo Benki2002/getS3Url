@@ -22,10 +22,29 @@ exports.handler = async (event: any, context: any, callback: any) => {
 		const rawBytes = await randomBytes(16)
 		const imageName = rawBytes.toString()
 		// The PUT operation will only be valid for the next 2-minutes.
+		var putParams = {
+			Bucket: bucketName,
+			Key: imageName,
+			Expires: (2 * 60),
+		};
+
+		// The GET operation will only be valid for the next 60-minutes.
+		// --
+		// NOTE: Even though the full GET operation is only valid for a week, we can
+		// tell the browser to cache the response for longer using the cache-control
+		// header (which we are defining via the ResponseCacheControl override).
+		var getParams = {
+			Bucket: bucketName,
+			Key: imageName,
+			Expires: (60 * 60),
+			ResponseCacheControl: "max-age=604800"
+		};
+		// var putUrl =   s3.getSignedUrl( "putObject", putParams );
+		//var getUrl =   s3.getSignedUrl( "getObject", getParams );
 		var params = { Bucket: bucketName, Key: imageName, Expires: 60 };
 		var promise = await s3.getSignedUrlPromise('putObject', params).then(value=>putURL=value)
 
-		console.log(' URL', putURL)
+		console.log('before resp URL', putURL)
 		//console.log('before resp URL', promise.ok)
 		resp = {
 			statusCode: 200,
