@@ -1,0 +1,10 @@
+/**
+@version:
+netlify:
+netlify-cli:
+angular:
+**/
+// install netlify/ netlify-cli locally 
+npm install --save-dev netlify-cli
+npm install --save-dev  netlify 
+//

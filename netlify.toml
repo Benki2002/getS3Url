@@ -1,0 +1,6 @@
+[build]
+publish="dist/s3ImageUpload"
+[[redirects]]
+from="/*"
+to="index.html"
+status=200
